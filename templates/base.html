@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Traceability App{% endblock %}</title>
+    <style>
+      /* Grundlegende Stile für das Dropdown-Menü */
+      .dropdown {
+        position: relative;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #f9f9f9;
+        min-width: 150px;
+        box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+        z-index: 1;
+        white-space: nowrap;  /* Verhindert den Zeilenumbruch */
+      }
+      .dropdown-content a {
+        display: block;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: #000;
+      }
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul style="display: flex; align-items: center; list-style: none;">
+          <!-- BENUTZER -->
+          <li style="margin-right:20px;"><a href="{{ url_for('index') }}">Startseite</a></li>
+          <li style="margin-right:20px;">
+            <span style="font-weight: bold; font-size: 0.9em;">Benutzer</span><br>
+            <form action="{{ url_for('index') }}" method="get" id="userForm">
+              <select name="selected_user" onchange="document.getElementById('userForm').submit()">
+                <option value="" {% if not selected_user %}selected{% endif %}>-- Benutzer auswählen --</option>
+                {% for user in users %}
+                  <option value="{{ user.id }}" {% if selected_user and selected_user == user.id %}selected{% endif %}>
+                    {{ user.username }}
+                  </option>
+                {% endfor %}
+              </select>
+            </form>
+          </li>
+          <!-- PROJEKTE -->
+          <li style="margin-right:20px;">
+            <span style="font-weight: bold; font-size: 0.9em;">Projekt</span><br>
+            <form action="{{ url_for('index') }}" method="get" id="projectForm">
+              <select name="selected_project" onchange="document.getElementById('projectForm').submit()">
+                <option value="" {% if not selected_project %}selected{% endif %}>-- Projekt auswählen --</option>
+                {% for project in projects %}
+                  <option value="{{ project.id }}" {% if selected_project and selected_project == project.id %}selected{% endif %}>
+                    {{ project.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </form>
+          </li>
+          <!-- MASCHINEN -->
+          <li style="margin-right:20px;">
+            <span style="font-weight: bold; font-size: 0.9em;">Maschine</span><br>
+            <form action="{{ url_for('index') }}" method="get" id="machineForm">
+              <select name="selected_machine" onchange="document.getElementById('machineForm').submit()">
+                <option value="" {% if not selected_machine %}selected{% endif %}>-- Maschine auswählen --</option>
+                {% for machine in machines %}
+                  <option value="{{ machine.id }}" {% if selected_machine and selected_machine == machine.id %}selected{% endif %}>
+                    {{ machine.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </form>
+          </li>
+          <!-- Einstellungen-Dropdown -->
+          <li class="dropdown settings" style="margin-left: auto; margin-right:20px; position: relative;">
+            <a href="#" id="settingsBtn">Einstellungen</a>
+            <div id="settingsDropdown" class="dropdown-content">
+              <a href="{{ url_for('manage_users') }}">Benutzer verwalten</a>
+              <a href="{{ url_for('manage_projects') }}">Projekte verwalten</a>
+              <a href="{{ url_for('manage_machines') }}">Maschinen verwalten</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <div>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <div>
+      {% block content %}{% endblock %}
+    </div>
+
+    <script>
+      // Toggle-Funktion für das Einstellungen-Dropdown
+      document.getElementById("settingsBtn").addEventListener("click", function(e) {
+        e.preventDefault();
+        var dropdown = document.getElementById("settingsDropdown");
+        // Wechsle die Anzeige: block, wenn derzeit none, andernfalls none
+        if (dropdown.style.display === "block") {
+          dropdown.style.display = "none";
+        } else {
+          dropdown.style.display = "block";
+        }
+      });
+
+      // Schließe das Dropdown, wenn irgendwo außerhalb geklickt wird
+      window.addEventListener("click", function(e) {
+        var settingsBtn = document.getElementById("settingsBtn");
+        var dropdown = document.getElementById("settingsDropdown");
+        // Wenn das Ziel außerhalb des Einstellungen-Buttons liegt, schließe das Dropdown
+        if (!settingsBtn.contains(e.target)) {
+          dropdown.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>

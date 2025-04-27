@@ -1,0 +1,7 @@
+flask
+flask-caching
+flask-limiter
+flask-migrate
+flask-sqlalchemy
+flask-wtf
+gunicorn

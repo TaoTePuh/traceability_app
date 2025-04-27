@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Maschinenverwaltung{% endblock %}
+
+{% block content %}
+  <h1>Maschinenverwaltung</h1>
+  
+  <form method="post" action="{{ url_for('manage_machines') }}">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.name.label }}<br>
+      {{ form.name(size=32) }}
+    </p>
+    <p>
+      {{ form.description.label }}<br>
+      {{ form.description(size=64) }}
+    </p>
+    <p>
+      {{ form.submit_redirect() }}
+      {{ form.submit_stay() }}
+    </p>
+  </form>
+  
+  <h2>Existierende Maschinen</h2>
+  <ul>
+    {% for machine in machines %}
+      <li>{{ machine.name }}{% if machine.description %} ({{ machine.description }}){% endif %}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

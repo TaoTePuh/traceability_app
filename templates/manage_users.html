@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Benutzerverwaltung{% endblock %}
+
+{% block content %}
+  <h1>Benutzerverwaltung</h1>
+  
+  <form method="post" action="{{ url_for('manage_users') }}">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.username.label }}<br>
+      {{ form.username(size=32) }}
+    </p>
+    <p>
+      {{ form.full_name.label }}<br>
+      {{ form.full_name(size=64) }}
+    </p>
+    <p>
+      {{ form.submit_redirect() }}
+      {{ form.submit_stay() }}
+    </p>
+  </form>
+  
+  <h2>Existierende Benutzer</h2>
+  <ul>
+    {% for user in users %}
+      <li>{{ user.username }}{% if user.full_name %} ({{ user.full_name }}){% endif %}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
