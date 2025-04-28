@@ -16,4 +16,8 @@ Thumbs.db
 
 # Datenbanken
 app.db
+*.db.backup
+
+# Backup-Berzeichnisse
+backups/
 
