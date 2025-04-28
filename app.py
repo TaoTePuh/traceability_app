@@ -58,6 +58,18 @@ def index():
 @app.route('/users', methods=['GET', 'POST'])
 def manage_users():
     form = UserForm()
+    # --- Lösch-Logik:
+    if request.method == 'POST' and 'delete_user_id' in request.form:
+        user_id = request.form['delete_user_id']
+        user = User.query.get(user_id)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            flash(f'Benutzer "{user.username}" erfolgreich gelöscht.')
+        else:
+            flash('Benutzer nicht gefunden.')
+        # Nach dem Löschen zurück auf die Verwaltungsseite
+        return redirect(url_for('manage_users'))
     if form.validate_on_submit():
         existing_user = User.query.filter_by(username=form.username.data).first()
         if existing_user:
