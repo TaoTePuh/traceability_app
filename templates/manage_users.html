@@ -24,17 +24,25 @@
   <h2>Existierende Benutzer</h2>
   <ul>
     {% for user in users %}
-      <li>
-        {{ user.username }}{% if user.full_name %} ({{ user.full_name }}){% endif %}
-        <!-- Lösch-Formular -->
-        <form method="post"
-              action="{{ url_for('manage_users') }}"
-              style="display:inline; margin-left:8px;">
-          {{ form.csrf_token }}
-          <input type="hidden" name="delete_user_id" value="{{ user.id }}">
-          <button type="submit">Löschen</button>
-        </form>
-      </li>
+    <li>
+      {{ user.username }}{% if user.full_name %} ({{ user.full_name }}){% endif %}
+    
+      <!-- Lösch-Formular wie gehabt -->
+      <form method="post"
+            action="{{ url_for('manage_users') }}"
+            style="display:inline; margin-left:8px;">
+        {{ form.csrf_token }}
+        <input type="hidden" name="delete_user_id" value="{{ user.id }}">
+        <button type="submit">Löschen</button>
+      </form>
+    
+      <!-- Neu: Bearbeiten als Button -->
+      <form method="get"
+            action="{{ url_for('edit_user', user_id=user.id) }}"
+            style="display:inline; margin-left:8px;">
+        <button type="submit">Bearbeiten</button>
+      </form>
+    </li>
     {% endfor %}
   </ul>
   {% endblock %}
