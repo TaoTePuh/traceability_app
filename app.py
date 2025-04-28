@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from forms import UserForm, ProjectForm, MachineForm
 from extensions import db
 from models import User, Project, Machine
+from flask import abort
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -131,6 +132,31 @@ def manage_machines():
                 return redirect(url_for('manage_machines', selected_machine=new_machine.id))
     machines = Machine.query.order_by(Machine.name).all()
     return render_template('manage_machines.html', form=form, machines=machines)
+
+
+@app.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
+def edit_user(user_id):
+    # 1) Lade bestehenden Benutzer oder 404-Fehler
+    user = User.query.get_or_404(user_id)
+
+    # 2) Fülle das Formular mit den aktuellen Werten
+    form = UserForm(obj=user)
+
+    # 3) Bei Absenden: prüfen, ob der neue Username schon belegt ist,
+    #    und ansonsten speichern
+    if form.validate_on_submit():
+        collision = User.query.filter_by(username=form.username.data).first()
+        if collision and collision.id != user.id:
+            flash('Ein anderer Benutzer mit diesem Namen existiert bereits.')
+        else:
+            user.username  = form.username.data
+            user.full_name = form.full_name.data
+            db.session.commit()
+            flash('Benutzerdaten erfolgreich aktualisiert.')
+            return redirect(url_for('manage_users'))
+
+    # 4) GET-Request oder fehlerhafte Eingaben: Formular anzeigen
+    return render_template('edit_user.html', form=form, user=user)
 
 
 if __name__ == '__main__':
