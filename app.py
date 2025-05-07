@@ -95,6 +95,17 @@ def manage_users():
 @app.route('/projects', methods=['GET', 'POST'])
 def manage_projects():
     form = ProjectForm()
+    # --- Lösch-Logik:
+    if request.method == 'POST' and 'delete_project_id' in request.form:
+        project_id = request.form['delete_project_id']
+        project = Project.query.get(project_id)
+        if project:
+            db.session.delete(project)
+            db.session.commit()
+            flash(f'Projekt „{project.name}“ erfolgreich gelöscht.')
+        else:
+            flash('Projekt nicht gefunden.')
+        return redirect(url_for('manage_projects'))
     if form.validate_on_submit():
         existing_project = Project.query.filter_by(name=form.name.data).first()
         if existing_project:
@@ -117,6 +128,17 @@ def manage_projects():
 @app.route('/maschinen', methods=['GET', 'POST'])
 def manage_machines():
     form = MachineForm()
+    # --- Lösch-Logik:
+    if request.method == 'POST' and 'delete_machine_id' in request.form:
+        machine_id = request.form['delete_machine_id']
+        machine = Machine.query.get(machine_id)
+        if machine:
+            db.session.delete(machine)
+            db.session.commit()
+            flash(f'Maschine „{machine.name}“ erfolgreich gelöscht.')
+        else:
+            flash('Maschine nicht gefunden.')
+        return redirect(url_for('manage_machines'))
     if form.validate_on_submit():
         existing_machine = Machine.query.filter_by(name=form.name.data).first()
         if existing_machine:
@@ -158,6 +180,37 @@ def edit_user(user_id):
     # 4) GET-Request oder fehlerhafte Eingaben: Formular anzeigen
     return render_template('edit_user.html', form=form, user=user)
 
+@app.route('/projects/edit/<int:project_id>', methods=['GET', 'POST'])
+def edit_project(project_id):
+    project = Project.query.get_or_404(project_id)
+    form = ProjectForm(obj=project)
+    if form.validate_on_submit():
+        collision = Project.query.filter_by(name=form.name.data).first()
+        if collision and collision.id != project.id:
+            flash('Ein anderes Projekt mit diesem Namen existiert bereits.')
+        else:
+            project.name        = form.name.data
+            project.description = form.description.data
+            db.session.commit()
+            flash('Projektdaten erfolgreich aktualisiert.')
+            return redirect(url_for('manage_projects'))
+    return render_template('edit_project.html', form=form, project=project)
+
+@app.route('/maschinen/edit/<int:machine_id>', methods=['GET', 'POST'])
+def edit_machine(machine_id):
+    machine = Machine.query.get_or_404(machine_id)
+    form = MachineForm(obj=machine)
+    if form.validate_on_submit():
+        collision = Machine.query.filter_by(name=form.name.data).first()
+        if collision and collision.id != machine.id:
+            flash('Eine andere Maschine mit diesem Namen existiert bereits.')
+        else:
+            machine.name        = form.name.data
+            machine.description = form.description.data
+            db.session.commit()
+            flash('Maschinendaten erfolgreich aktualisiert.')
+            return redirect(url_for('manage_machines'))
+    return render_template('edit_machine.html', form=form, machine=machine)
 
 if __name__ == '__main__':
     app.run(debug=True)
