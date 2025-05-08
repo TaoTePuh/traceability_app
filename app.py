@@ -1,9 +1,9 @@
 from flask import Flask, render_template, redirect, url_for, flash, request, session
 from config import Config
 from flask_migrate import Migrate
-from forms import UserForm, ProjectForm, MachineForm
+from forms import UserForm, ProjectForm, MachineForm, SetupForm
 from extensions import db
-from models import User, Project, Machine
+from models import User, Project, Machine, Setup
 from flask import abort
 
 app = Flask(__name__)
@@ -167,6 +167,23 @@ def manage_machines():
     machines = Machine.query.order_by(Machine.name).all()
     return render_template('manage_machines.html', form=form, machines=machines)
 
+ @app.route('/setup/new', methods=['GET', 'POST'])
+ def new_setup():
+     form = SetupForm()
+     if form.validate_on_submit():
+        # hier DataRequired() auf den SelectFields sorgt schon für die Validierung
+        setup = Setup(
+            benutzer_id  = form.benutzer.data,
+            projekt_id   = form.projekt.data,
+            maschine_id  = form.maschine.data,
+            setupname    = form.setupname.data,
+            bemerkungen  = form.bemerkungen.data
+        )
+        db.session.add(setup)
+        db.session.commit()
+        flash('Rüstung erfolgreich angelegt.', 'success')
+        return redirect(url_for('some_list_view'))  # z.B. zur Übersicht aller Rüstungen
+     return render_template('setup_form.html', form=form)
 
 @app.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):
