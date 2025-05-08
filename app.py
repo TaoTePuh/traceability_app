@@ -167,11 +167,10 @@ def manage_machines():
     machines = Machine.query.order_by(Machine.name).all()
     return render_template('manage_machines.html', form=form, machines=machines)
 
- @app.route('/setup/new', methods=['GET', 'POST'])
- def new_setup():
-     form = SetupForm()
-     if form.validate_on_submit():
-        # hier DataRequired() auf den SelectFields sorgt schon für die Validierung
+@app.route('/setup/new', methods=['GET', 'POST'])
+def new_setup():
+    form = SetupForm()
+    if form.validate_on_submit():
         setup = Setup(
             benutzer_id  = form.benutzer.data,
             projekt_id   = form.projekt.data,
@@ -181,9 +180,9 @@ def manage_machines():
         )
         db.session.add(setup)
         db.session.commit()
-        flash('Rüstung erfolgreich angelegt.', 'success')
-        return redirect(url_for('some_list_view'))  # z.B. zur Übersicht aller Rüstungen
-     return render_template('setup_form.html', form=form)
+        flash('Setup erfolgreich angelegt.', 'success')
+        return redirect(url_for('setup_list'))  # falls du eine Listen-View hast
+    return render_template('manage_setups.html', form=form)
 
 @app.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):

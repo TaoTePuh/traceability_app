@@ -33,16 +33,16 @@ class Machine(db.Model):
 
 class Setup(db.Model):
     __tablename__ = 'setup'
-    id            = db.Column(db.Integer, primary_key=True)
-    setupname     = db.Column(db.String(128), nullable=False)
-    bemerkungen   = db.Column(db.Text)
+    id          = db.Column(db.Integer, primary_key=True)
+    setupname   = db.Column(db.String(128), nullable=False)
+    bemerkungen = db.Column(db.Text)
 
     # Foreign Keys auf bestehende Tabellen
-    benutzer_id   = db.Column(db.Integer, db.ForeignKey('benutzer.id'), nullable=False)
-    projekt_id    = db.Column(db.Integer, db.ForeignKey('projekt.id'),  nullable=False)
-    maschine_id   = db.Column(db.Integer, db.ForeignKey('maschine.id'), nullable=False)
+    benutzer_id = db.Column(db.Integer, db.ForeignKey('benutzer.id'), nullable=False)
+    projekt_id  = db.Column(db.Integer, db.ForeignKey('projekt.id'),  nullable=False)
+    maschine_id = db.Column(db.Integer, db.ForeignKey('maschine.id'), nullable=False)
 
-    # Beziehungs­felder (optional für bequemes Joins/Backrefs)
-    benutzer      = db.relationship('Benutzer', backref='setups')
-    projekt       = db.relationship('Projekt',  backref='setups')
-    maschine      = db.relationship('Maschine', backref='setups')
+    # Beziehung für bequemes Join/Backref
+    benutzer    = db.relationship('Benutzer', backref='setups')
+    projekt     = db.relationship('Projekt',  backref='setups')
+    maschine    = db.relationship('Maschine', backref='setups')

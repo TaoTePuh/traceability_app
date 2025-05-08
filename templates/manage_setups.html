@@ -4,12 +4,11 @@
 
 {% block content %}
   <h1>Neues Setup anlegen</h1>
-
   <form method="POST" action="{{ url_for('manage_setups') }}>
     {{ form.hidden_tag() }}
-    <div>{{ form.benutzer.label }} {{ form.benutzer() }}</div>
-    <div>{{ form.projekt.label }} {{ form.projekt() }}</div>
-    <div>{{ form.maschine.label }} {{ form.maschine() }}</div>
+    <div>{{ form.benutzer.label  }} {{ form.benutzer() }}</div>
+    <div>{{ form.projekt.label   }} {{ form.projekt()  }}</div>
+    <div>{{ form.maschine.label  }} {{ form.maschine() }}</div>
     <div>{{ form.setupname.label }} {{ form.setupname() }}</div>
     <div>{{ form.bemerkungen.label }} {{ form.bemerkungen() }}</div>
     <button type="submit">Speichern</button>
