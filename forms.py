@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, Length
-from models import Benutzer, Projekt, Maschine
+from models import User, Project, Machine
 
 class UserForm(FlaskForm):
     username        = StringField('Username', validators=[DataRequired(), Length(min=1, max=64)])
@@ -34,6 +34,6 @@ class SetupForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Choices laden, analog zu anderen Formen
-        self.benutzer.choices = [(b.id, b.name) for b in Benutzer.query.order_by(Benutzer.name)]
+        self.benutzer.choices = [(u.id, u.username) for u in User.query.order_by(User.username)]
         self.projekt.choices  = [(p.id, p.name) for p in Projekt.query.order_by(Projekt.name)]
         self.maschine.choices = [(m.id, m.name) for m in Maschine.query.order_by(Maschine.name)]

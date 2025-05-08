@@ -37,12 +37,11 @@ class Setup(db.Model):
     setupname   = db.Column(db.String(128), nullable=False)
     bemerkungen = db.Column(db.Text)
 
-    # Foreign Keys auf bestehende Tabellen
-    benutzer_id = db.Column(db.Integer, db.ForeignKey('benutzer.id'), nullable=False)
-    projekt_id  = db.Column(db.Integer, db.ForeignKey('projekt.id'),  nullable=False)
-    maschine_id = db.Column(db.Integer, db.ForeignKey('maschine.id'), nullable=False)
-
-    # Beziehung für bequemes Join/Backref
-    benutzer    = db.relationship('Benutzer', backref='setups')
-    projekt     = db.relationship('Projekt',  backref='setups')
-    maschine    = db.relationship('Maschine', backref='setups')
+    # korrekte ForeignKeys auf deine englisch benannten Tabellen
+    benutzer_id = db.Column(db.Integer, db.ForeignKey('user.id'),    nullable=False)
+    projekt_id  = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    maschine_id = db.Column(db.Integer, db.ForeignKey('machine.id'), nullable=False)
+    # Relationships auf die englischen Klassen
+    benutzer = db.relationship('User',    backref='setups')
+    projekt  = db.relationship('Project', backref='setups')
+    maschine = db.relationship('Machine', backref='setups')
