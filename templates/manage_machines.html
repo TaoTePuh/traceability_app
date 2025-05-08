@@ -30,7 +30,7 @@
     {% for machine in machines %}
     <li>
       {{ machine.name }}{% if machine.description %} ({{ machine.description }}){% endif %}
-      {% if machine.remarks %} – Bemerkungen: {{ machine.remarks }}{% endif %}
+                        {% if machine.remarks %} [{{ machine.remarks }}]{% endif %}
 
       <!-- Löschen -->
       <form method="post"

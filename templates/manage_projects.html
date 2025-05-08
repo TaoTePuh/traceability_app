@@ -30,7 +30,7 @@
     {% for project in projects %}
     <li>
       {{ project.name }}{% if project.description %} ({{ project.description }}){% endif %}
-      {% if project.remarks %} – Bemerkungen: {{ project.remarks }}{% endif %}
+                        {% if project.remarks %} [{{ project.remarks }}]{% endif %}
 
       <!-- Löschen -->
       <form method="post"

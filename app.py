@@ -18,12 +18,12 @@ def inject_common_data():
     users = User.query.order_by(User.username).all()
     projects = Project.query.order_by(Project.name).all()
     machines = Machine.query.order_by(Machine.name).all()
-    
+
     # Lies Werte aus GET-Parameter oder der Session
     selected_user = request.args.get('selected_user') or session.get('selected_user')
     selected_project = request.args.get('selected_project') or session.get('selected_project')
     selected_machine = request.args.get('selected_machine') or session.get('selected_machine')
-    
+
     # Speichere in der Session, falls vorhanden
     if selected_user:
         session['selected_user'] = selected_user
@@ -76,7 +76,11 @@ def manage_users():
         if existing_user:
             flash('Benutzer existiert bereits.')
         else:
-            new_user = User(username=form.username.data, full_name=form.full_name.data)
+            new_user = User(
+                username=form.username.data,
+                full_name=form.full_name.data,
+                remarks=form.remarks.data
+            )
             db.session.add(new_user)
             db.session.commit()
             flash('Benutzer erfolgreich angelegt.')
@@ -111,7 +115,11 @@ def manage_projects():
         if existing_project:
             flash('Projekt existiert bereits.')
         else:
-            new_project = Project(name=form.name.data, description=form.description.data)
+            new_project = Project(
+                name=form.name.data,
+                description=form.description.data,
+                remarks=form.remarks.data
+            )
             db.session.add(new_project)
             db.session.commit()
             flash('Projekt erfolgreich angelegt.')
@@ -144,7 +152,11 @@ def manage_machines():
         if existing_machine:
             flash('Maschine existiert bereits.')
         else:
-            new_machine = Machine(name=form.name.data, description=form.description.data)
+            new_machine = Machine(
+                name=form.name.data,
+                description=form.description.data,
+                remarks=form.remarks.data
+            )
             db.session.add(new_machine)
             db.session.commit()
             flash('Maschine erfolgreich angelegt.')
@@ -173,6 +185,7 @@ def edit_user(user_id):
         else:
             user.username  = form.username.data
             user.full_name = form.full_name.data
+            user.remarks   = form.remarks.data
             db.session.commit()
             flash('Benutzerdaten erfolgreich aktualisiert.')
             return redirect(url_for('manage_users'))
@@ -191,6 +204,7 @@ def edit_project(project_id):
         else:
             project.name        = form.name.data
             project.description = form.description.data
+            project.remarks     = form.remarks.data
             db.session.commit()
             flash('Projektdaten erfolgreich aktualisiert.')
             return redirect(url_for('manage_projects'))
@@ -207,6 +221,7 @@ def edit_machine(machine_id):
         else:
             machine.name        = form.name.data
             machine.description = form.description.data
+            machine.remarks     = form.remarks.data
             db.session.commit()
             flash('Maschinendaten erfolgreich aktualisiert.')
             return redirect(url_for('manage_machines'))
