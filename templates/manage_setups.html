@@ -4,7 +4,7 @@
 
 {% block content %}
   <h1>Neues Setup anlegen</h1>
-  <form method="POST" action="{{ url_for('manage_setups') }}>
+  <form method="POST" action="{{ url_for('new_setup') }}">
     {{ form.hidden_tag() }}
     <div>{{ form.benutzer.label  }} {{ form.benutzer() }}</div>
     <div>{{ form.projekt.label   }} {{ form.projekt()  }}</div>
