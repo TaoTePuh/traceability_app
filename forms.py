@@ -35,5 +35,7 @@ class SetupForm(FlaskForm):
         super().__init__(*args, **kwargs)
         # Choices laden, analog zu anderen Formen
         self.benutzer.choices = [(u.id, u.username) for u in User.query.order_by(User.username)]
-        self.projekt.choices  = [(p.id, p.name) for p in Projekt.query.order_by(Projekt.name)]
-        self.maschine.choices = [(m.id, m.name) for m in Maschine.query.order_by(Maschine.name)]
+        self.projekt.choices  = [(p.id, p.name)     for p in Project.query.order_by(Project.name)]
+        self.maschine.choices = [(m.id, m.name)     for m in Machine.query.order_by(Machine.name)]
+
+
