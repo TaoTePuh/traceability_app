@@ -4,7 +4,7 @@
 
 {% block content %}
   <h1>Neues Setup anlegen</h1>
-  <form method="POST" action="{{ url_for('new_setup') }}">
+  <form method="POST" action="{{ url_for('manage_setups') }}">
     {{ form.hidden_tag() }}
     <div>{{ form.benutzer.label  }} {{ form.benutzer() }}</div>
     <div>{{ form.projekt.label   }} {{ form.projekt()  }}</div>
@@ -16,27 +16,13 @@
 
   <h2>Existierende Setups</h2>
   <ul>
-    {% for setup in setups %}
+  {% for s in setups %}
     <li>
-      {{ setup.name }}{% if setup.description %} ({{ setup.description }}){% endif %}
-                        {% if setup.remarks %} [{{ setup.remarks }}]{% endif %}
-
-      <!-- Löschen -->
-      <form method="post"
-            action="{{ url_for('manage_setups') }}"
-            style="display:inline; margin-left:8px;">
-        {{ form.csrf_token }}
-        <input type="hidden" name="delete_setup_id" value="{{ setup.id }}">
-        <button type="submit">Löschen</button>
-      </form>
-
-      <!-- Bearbeiten -->
-      <form method="get"
-            action="{{ url_for('edit_setup', setup_id=setup.id) }}"
-            style="display:inline; margin-left:8px;">
-        <button type="submit">Bearbeiten</button>
-      </form>
+      {{ s.setupname }}
+      ({{ s.benutzer.username }}, {{ s.projekt.name }}, {{ s.maschine.name }})
     </li>
-    {% endfor %}
+  {% else %}
+    <li>Keine Setups vorhanden.</li>
+  {% endfor %}
   </ul>
-  {% endblock %}
+{% endblock %}

@@ -76,6 +76,20 @@
               </select>
             </form>
           </li>
+          <!-- SETUPS -->
+          <li style="margin-right:20px;">
+            <span style="font-weight: bold; font-size: 0.9em;">Setup</span><br>
+            <form action="{{ url_for('index') }}" method="get" id="setupForm">
+              <select name="selected_setup" onchange="document.getElementById('setupForm').submit()">
+                <option value="" {% if not selected_setup %}selected{% endif %}>-- Setup auswählen --</option>
+                {% for setup in setups %}
+                  <option value="{{ setup.id }}" {% if selected_setup and selected_setup == setup.id %}selected{% endif %}>
+                    {{ setup.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </form>
+          </li>
           <!-- Einstellungen-Dropdown -->
           <li class="dropdown settings" style="margin-left: auto; margin-right:20px; position: relative;">
             <a href="#" id="settingsBtn">Einstellungen</a>
@@ -83,6 +97,7 @@
               <a href="{{ url_for('manage_users') }}">Benutzer verwalten</a>
               <a href="{{ url_for('manage_projects') }}">Projekte verwalten</a>
               <a href="{{ url_for('manage_machines') }}">Maschinen verwalten</a>
+              <a href="{{ url_for('manage_setups') }}">Setups verwalten</a>
             </div>
           </li>
         </ul>

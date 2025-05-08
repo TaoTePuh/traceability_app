@@ -167,22 +167,38 @@ def manage_machines():
     machines = Machine.query.order_by(Machine.name).all()
     return render_template('manage_machines.html', form=form, machines=machines)
 
-@app.route('/setup/new', methods=['GET', 'POST'])
-def new_setup():
+@app.route('/setups', methods=['GET', 'POST'])
+def manage_setups():
     form = SetupForm()
+
+    # --- Lösch-Logik:
+    if request.method == 'POST' and 'delete_setupd_id' in request.form:
+        setup_id = request.form['delete_setup_id']
+        setup = Setup.query.get(setup_id)
+        if setup:
+            db.session.delete(setup)
+            db.session.commit()
+            flash(f'Maschine „{setup.name}“ erfolgreich gelöscht.')
+        else:
+            flash('Maschine nicht gefunden.')
+        return redirect(url_for('manage_setups'))
+
     if form.validate_on_submit():
-        setup = Setup(
+        new_setup = Setup(
             benutzer_id  = form.benutzer.data,
             projekt_id   = form.projekt.data,
             maschine_id  = form.maschine.data,
             setupname    = form.setupname.data,
             bemerkungen  = form.bemerkungen.data
         )
-        db.session.add(setup)
+        db.session.add(new_setup)
         db.session.commit()
         flash('Setup erfolgreich angelegt.', 'success')
-        return redirect(url_for('setup_list'))  # falls du eine Listen-View hast
-    return render_template('manage_setups.html', form=form)
+        return redirect(url_for('manage_setups'))
+
+    # Liste aller Setups zum Anzeigen im Template
+    setups = Setup.query.order_by(Setup.setupname).all()
+    return render_template('manage_setups.html', form=form, setups=setups)
 
 @app.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):
@@ -242,6 +258,23 @@ def edit_machine(machine_id):
             flash('Maschinendaten erfolgreich aktualisiert.')
             return redirect(url_for('manage_machines'))
     return render_template('edit_machine.html', form=form, machine=machine)
+
+@app.route('/setups/edit/<int:setup_id>', methods=['GET', 'POST'])
+def edit_setup(setup_id):
+    setup = Setup.query.get_or_404(setup_id)
+    form = SetupForm(obj=setup)
+    if form.validate_on_submit():
+        collision = Setup.query.filter_by(name=form.name.data).first()
+        if collision and collision.id != setup.id:
+            flash('Eine anderees Setup mit diesem Namen existiert bereits.')
+        else:
+            setup.name        = form.name.data
+            setup.description = form.description.data
+            setup.remarks     = form.remarks.data
+            db.session.commit()
+            flash('Setup erfolgreich aktualisiert.')
+            return redirect(url_for('manage_setups'))
+    return render_template('edit_setup.html', form=form, setup=setup)
 
 if __name__ == '__main__':
     app.run(debug=True)
