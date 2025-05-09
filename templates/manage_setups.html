@@ -29,26 +29,20 @@
 
   <h2>Existierende Setups</h2>
   <ul>
-  {% for setup in setups %}
+  {% for s in setups %}
     <li>
-      {{ setup.name }}
-      ({{ setup.benutzer.username }}, {{ setup.projekt.name }}, {{ setup.maschine.name }})
-
-      <!-- Löschen -->
-      <form method="post"
-            action="{{ url_for('manage_setups') }}"
-            style="display:inline; margin-left:8px;">
-        {{ form.csrf_token }}
-        <input type="hidden" name="delete_setup_id" value="{{ setup.id }}">
-        <button type="submit">Löschen</button>
+      {{ s.setupname }} ({{ s.benutzer.username }}, {{ s.projekt.name }}, {{ s.maschine.name }})
+      <!-- Kleines Formular nur für Delete -->
+      <form method="POST"
+            action="{{ url_for('delete_setup', id=s.id) }}"
+            style="display:inline;">
+        {{ form.csrf_token }}    {# wenn Du CSRF benutzt #}
+        <button type="submit"
+                onclick="return confirm('Setup wirklich löschen?');">
+          Löschen
+        </button>
       </form>
-
-      <!-- Bearbeiten -->
-      <form method="get"
-            action="{{ url_for('edit_setup', setup_id=setup.id) }}"
-            style="display:inline; margin-left:8px;">
-        <button type="submit">Bearbeiten</button>
-      </form>
+      <a href="{{ url_for('edit_setup', id=s.id) }}">Bearbeiten</a>
     </li>
   {% else %}
     <li>Keine Setups vorhanden.</li>
