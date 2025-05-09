@@ -34,7 +34,7 @@ class Machine(db.Model):
 class Setup(db.Model):
     __tablename__ = 'setup'
     id          = db.Column(db.Integer, primary_key=True)
-    setupname   = db.Column(db.String(128), nullable=False)
+    name        = db.Column(db.String(128), nullable=False)
     bemerkungen = db.Column(db.Text)
 
     # korrekte ForeignKeys auf deine englisch benannten Tabellen
@@ -45,3 +45,6 @@ class Setup(db.Model):
     benutzer = db.relationship('User',    backref='setups')
     projekt  = db.relationship('Project', backref='setups')
     maschine = db.relationship('Machine', backref='setups')
+
+    def __repr__(self):
+        return f'<Setup {self.name}>'

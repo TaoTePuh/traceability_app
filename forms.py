@@ -25,11 +25,13 @@ class MachineForm(FlaskForm):
     submit_stay     = SubmitField('Maschine anlegen und weitere anlegen')
 
 class SetupForm(FlaskForm):
-    benutzer     = SelectField('Benutzer',   coerce=int, validators=[DataRequired()])
-    projekt      = SelectField('Projekt',    coerce=int, validators=[DataRequired()])
-    maschine     = SelectField('Maschine',   coerce=int, validators=[DataRequired()])
-    setupname    = StringField('Setup-Name', validators=[DataRequired()])
-    bemerkungen  = TextAreaField('Bemerkungen')
+    benutzer        = SelectField('Benutzer',   coerce=int, validators=[DataRequired()])
+    projekt         = SelectField('Projekt',    coerce=int, validators=[DataRequired()])
+    maschine        = SelectField('Maschine',   coerce=int, validators=[DataRequired()])
+    name            = StringField('Setup-Name', validators=[DataRequired()])
+    bemerkungen     = TextAreaField('Bemerkungen')
+    submit_redirect = SubmitField('Setup anlegen und auswählen')
+    submit_stay     = SubmitField('Setup anlegen und weitere anlegen')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
