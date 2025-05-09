@@ -31,7 +31,7 @@
   <ul>
   {% for s in setups %}
     <li>
-      {{ s.setupname }} ({{ s.benutzer.username }}, {{ s.projekt.name }}, {{ s.maschine.name }})
+      {{ s.name }} ({{ s.benutzer.username }}, {{ s.projekt.name }}, {{ s.maschine.name }})
       <!-- Kleines Formular nur für Delete -->
       <form method="POST"
             action="{{ url_for('delete_setup', setup_id=s.id) }}"

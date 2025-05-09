@@ -281,12 +281,12 @@ def edit_setup(setup_id):
             return redirect(url_for('manage_setups'))
     return render_template('edit_setup.html', form=form, setup=setup)
 
-@app.route('/setups/<int:id>/delete', methods=['POST'])
-def delete_setup(id):
-    setup = Setup.query.get_or_404(id)
+@app.route('/setups/<int:setup_id>/delete', methods=['POST'])
+def delete_setup(setup_id):
+    setup = Setup.query.get_or_404(setup_id)
     db.session.delete(setup)
     db.session.commit()
-    flash(f"Setup «{setup.setupname}» gelöscht.", "success")
+    flash(f"Setup «{setup.name}» gelöscht.", "success")
     return redirect(url_for('manage_setups'))
 
 if __name__ == '__main__':
