@@ -262,7 +262,7 @@ def edit_machine(machine_id):
             return redirect(url_for('manage_machines'))
     return render_template('edit_machine.html', form=form, machine=machine)
 
-@app.route('/setups/edit/<int:setup_id>', methods=['GET', 'POST'])
+@app.route('/setups/<int:setup_id>/edit', methods=['GET', 'POST'])
 def edit_setup(setup_id):
     setup = Setup.query.get_or_404(setup_id)
     form = SetupForm(obj=setup)
@@ -271,11 +271,11 @@ def edit_setup(setup_id):
         if collision and collision.id != setup.id:
             flash('Eine anderees Setup mit diesem Namen existiert bereits.')
         else:
-            benutzer_id  = form.benutzer.data
-            projekt_id   = form.projekt.data
-            maschine_id  = form.maschine.data
-            name         = form.name.data
-            bemerkungen  = form.bemerkungen.data
+            setup.benutzer_id = form.benutzer.data
+            setup.projekt_id  = form.projekt.data
+            setup.maschine_id = form.maschine.data
+            setup.name        = form.name.data
+            setup.bemerkungen = form.bemerkungen.data
             db.session.commit()
             flash('Setup erfolgreich aktualisiert.')
             return redirect(url_for('manage_setups'))
