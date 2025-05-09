@@ -266,6 +266,11 @@ def edit_machine(machine_id):
 def edit_setup(setup_id):
     setup = Setup.query.get_or_404(setup_id)
     form = SetupForm(obj=setup)
+    # bei GET einmal die Dropdowns korrekt vorbelegen:
+    if request.method == 'GET':
+        form.benutzer.data = setup.benutzer_id
+        form.projekt.data  = setup.projekt_id
+        form.maschine.data = setup.maschine_id
     if form.validate_on_submit():
         collision = Setup.query.filter_by(name=form.name.data).first()
         if collision and collision.id != setup.id:
