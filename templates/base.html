@@ -34,18 +34,14 @@
       <nav>
         <ul style="display: flex; align-items: center; list-style: none;">
           <!-- SETUPS -->
-          <li style="margin-right:20px;">
-            <span style="font-weight: bold; font-size: 0.9em;">Setup</span><br>
-            <form action="{{ url_for('index') }}" method="get" id="setupForm">
-              <select name="selected_setup" onchange="document.getElementById('setupForm').submit()">
-                <option value="" {% if not selected_setup %}selected{% endif %}>-- Setup auswählen --</option>
-                {% for setup in setups %}
-                  <option value="{{ setup.id }}" {% if selected_setup and selected_setup == setup.id %}selected{% endif %}>
-                    {{ setup.name }}
-                  </option>
-                {% endfor %}
-              </select>
-            </form>
+          <li>
+            <label for="setup">Setup</label><br>
+            <select name="setup" id="setup">
+              <option value="">-- Setup auswählen --</option>
+              {% for s in setups %}
+                <option value="{{ s.id }}">{{ s.name }}</option>
+              {% endfor %}
+            </select>
           </li>
           <!-- Einstellungen-Dropdown -->
           <li class="dropdown settings" style="margin-left: auto; margin-right:20px; position: relative;">

@@ -5,6 +5,7 @@ from forms import UserForm, ProjectForm, MachineForm, SetupForm
 from extensions import db
 from models import User, Project, Machine, Setup
 from flask import abort
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -52,9 +53,12 @@ def inject_common_data():
 
 @app.route('/')
 def index():
-    # Deine Hauptseite – greift auf selected_user via context_processor zu
-    return render_template('index.html')
-
+    # alle Setups, deren status = 'offen' (case-insensitive)
+    setups = (Setup.query
+                   .filter(func.lower(Setup.status) == 'offen')
+                   .order_by(Setup.name)
+                   .all())
+    return render_template('index.html', setups=setups)
 
 @app.route('/users', methods=['GET', 'POST'])
 def manage_users():
