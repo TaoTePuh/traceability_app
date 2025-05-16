@@ -28,6 +28,10 @@
       {{ form.bemerkungen() }}
     </p>
     <p>
+      {{ form.status.label }}<br>
+      {{ form.status() }}
+    </p>
+    <p>
       {{ form.submit_redirect() }} {{ form.submit_stay() }}
     </p>
   </form>
@@ -55,7 +59,7 @@
         </button>
       </form>
 
-      {{ s.name }} ({{ s.benutzer.username }}, {{ s.projekt.name }}, {{ s.maschine.name }})
+      {{ s.name }} ({{ s.benutzer.username }}, {{ s.benutzer.username }}, {{ s.projekt.name }}, {{ s.maschine.name }})
 
     </li>
   {% else %}

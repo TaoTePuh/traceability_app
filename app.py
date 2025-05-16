@@ -191,7 +191,8 @@ def manage_setups():
                 projekt_id   = form.projekt.data,
                 maschine_id  = form.maschine.data,
                 name         = form.name.data,
-                bemerkungen  = form.bemerkungen.data
+                bemerkungen  = form.bemerkungen.data,
+                status       = form.status.data,
             )
             db.session.add(new_setup)
             db.session.commit()

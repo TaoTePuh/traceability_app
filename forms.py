@@ -32,6 +32,7 @@ class SetupForm(FlaskForm):
     bemerkungen     = TextAreaField('Bemerkungen')
     submit_redirect = SubmitField('Setup anlegen und auswählen')
     submit_stay     = SubmitField('Setup anlegen und weitere anlegen')
+    status          = StringField('Status')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

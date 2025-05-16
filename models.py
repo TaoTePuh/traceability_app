@@ -36,6 +36,7 @@ class Setup(db.Model):
     id          = db.Column(db.Integer, primary_key=True)
     name        = db.Column(db.String(128), nullable=False)
     bemerkungen = db.Column(db.Text)
+    status      = db.Column(db.String(128), nullable=True)
 
     # korrekte ForeignKeys auf deine englisch benannten Tabellen
     benutzer_id = db.Column(db.Integer, db.ForeignKey('user.id'),    nullable=False)
