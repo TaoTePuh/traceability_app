@@ -192,7 +192,7 @@ def manage_setups():
                 maschine_id  = form.maschine.data,
                 name         = form.name.data,
                 bemerkungen  = form.bemerkungen.data,
-                status       = form.status.data,
+                status       = form.status.data
             )
             db.session.add(new_setup)
             db.session.commit()
@@ -282,6 +282,7 @@ def edit_setup(setup_id):
             setup.maschine_id = form.maschine.data
             setup.name        = form.name.data
             setup.bemerkungen = form.bemerkungen.data
+            setup.status      = form.status.data
             db.session.commit()
             flash('Setup erfolgreich aktualisiert.')
             return redirect(url_for('manage_setups'))

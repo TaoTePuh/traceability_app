@@ -7,22 +7,10 @@
 
   <form method="post" action="{{ url_for('manage_machines') }}">
     {{ form.hidden_tag() }}
-    <p>
-      {{ form.name.label }}<br>
-      {{ form.name(size=32) }}
-    </p>
-    <p>
-      {{ form.description.label }}<br>
-      {{ form.description(size=64) }}
-    </p>
-    <p>
-      {{ form.remarks.label }}<br>
-      {{ form.remarks(size=64) }}
-    </p>
-    <p>
-      {{ form.submit_redirect() }}
-      {{ form.submit_stay() }}
-    </p>
+      <div>{{ form.name.label        }}<br>{{ form.name(size=32)        }}<br><br></div>
+      <div>{{ form.description.label }}<br>{{ form.description(size=64) }}<br><br></div>
+      <div>{{ form.remarks.label     }}<br>{{ form.remarks(size=64)     }}<br><br></div>
+      <div>{{ form.submit_redirect() }}    {{ form.submit_stay()        }}<br><br></div>
   </form>
 
   <h2>Existierende Maschinen</h2>

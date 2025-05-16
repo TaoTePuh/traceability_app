@@ -7,23 +7,10 @@
 
   <form method="post" action="{{ url_for('edit_user', user_id=user.id) }}">
     {{ form.hidden_tag() }}
-
-    <p>
-      {{ form.username.label }}<br>
-      {{ form.username(size=32) }}
-    </p>
-    <p>
-      {{ form.full_name.label }}<br>
-      {{ form.full_name(size=64) }}
-    </p>
-    <p>
-      {{ form.remarks.label }}<br>
-      {{ form.remarks(size=64) }}
-    </p>
-
-    <p>
+      <div>{{ form.username.label  }}<br>{{ form.username(size=32)  }}<br><br></div>
+      <div>{{ form.full_name.label }}<br>{{ form.full_name(size=64) }}<br><br></div>
+      <div>{{ form.remarks.label   }}<br>{{ form.remarks(size=64)   }}<br><br></div>
       <button type="submit">Speichern</button>
       <a href="{{ url_for('manage_users') }}">Abbrechen</a>
-    </p>
   </form>
 {% endblock %}
