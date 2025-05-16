@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Maschinenverwaltung{% endblock %}
+{% block title %}Maschinen verwalten{% endblock %}
 
 {% block content %}
-  <h1>Maschinenverwaltung</h1>
+  <h1>Maschinen verwalten</h1>
 
   <form method="post" action="{{ url_for('manage_machines') }}">
     {{ form.hidden_tag() }}
@@ -29,24 +29,26 @@
   <ul>
     {% for machine in machines %}
     <li>
-      {{ machine.name }}{% if machine.description %} ({{ machine.description }}){% endif %}
-                        {% if machine.remarks %} [{{ machine.remarks }}]{% endif %}
+
+      <!-- Bearbeiten -->
+      <form method="get"
+            action="{{ url_for('edit_machine', machine_id=machine.id) }}"
+            style="display:inline;">
+        <button type="submit">Bearbeiten</button>
+      </form>
 
       <!-- Löschen -->
       <form method="post"
             action="{{ url_for('manage_machines') }}"
-            style="display:inline; margin-left:8px;">
+            style="display:inline;">
         {{ form.csrf_token }}
         <input type="hidden" name="delete_machine_id" value="{{ machine.id }}">
         <button type="submit">Löschen</button>
       </form>
 
-      <!-- Bearbeiten -->
-      <form method="get"
-            action="{{ url_for('edit_machine', machine_id=machine.id) }}"
-            style="display:inline; margin-left:8px;">
-        <button type="submit">Bearbeiten</button>
-      </form>
+      {{ machine.name }}{% if machine.description %} ({{ machine.description }}){% endif %}
+                        {% if machine.remarks %} [{{ machine.remarks }}]{% endif %}
+
     </li>
     {% endfor %}
   </ul>

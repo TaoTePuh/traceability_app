@@ -184,7 +184,7 @@ def manage_setups():
     if form.validate_on_submit():
         existing_setup = Setup.query.filter_by(name=form.name.data).first()
         if existing_setup:
-            flash('Ssetup existiert bereits.')
+            flash('Setup existiert bereits.')
         else:
             new_setup = Setup(
                 benutzer_id  = form.benutzer.data,

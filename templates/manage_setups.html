@@ -1,26 +1,31 @@
 {% extends 'base.html' %}
 
-{% block title %}Setup-Verwaltung{% endblock %}
+{% block title %}Setups verwalten{% endblock %}
 
 {% block content %}
-  <h1>Neues Setup anlegen</h1>
+  <h1>Setups verwalten</h1>
 
   <form method="POST" action="{{ url_for('manage_setups') }}">
     {{ form.hidden_tag() }}
     <p>
-      {{ form.benutzer.label }} {{ form.benutzer() }}
+      {{ form.benutzer.label }}<br>
+      {{ form.benutzer() }}
     </p>
     <p>
-      {{ form.projekt.label }} {{ form.projekt() }}
+      {{ form.projekt.label }}<br>
+      {{ form.projekt() }}
     </p>
     <p>
-      {{ form.maschine.label }} {{ form.maschine() }}
+      {{ form.maschine.label }}<br>
+      {{ form.maschine() }}
     </p>
     <p>
-      {{ form.name.label }} {{ form.name() }}
+      {{ form.name.label }}<br>
+      {{ form.name() }}
     </p>
     <p>
-      {{ form.bemerkungen.label }} {{ form.bemerkungen() }}
+      {{ form.bemerkungen.label }}<br>
+      {{ form.bemerkungen() }}
     </p>
     <p>
       {{ form.submit_redirect() }} {{ form.submit_stay() }}
@@ -31,8 +36,15 @@
   <ul>
   {% for s in setups %}
     <li>
-      {{ s.name }} ({{ s.benutzer.username }}, {{ s.projekt.name }}, {{ s.maschine.name }})
-      <!-- Kleines Formular nur für Delete -->
+
+      <!-- Bearbeiten -->
+      <form method="GET"
+        action="{{ url_for('edit_setup', setup_id=s.id) }}"
+        style="display:inline;">
+        <button type="submit">Bearbeiten</button>
+      </form>
+
+      <!-- Löschen -->
       <form method="POST"
             action="{{ url_for('delete_setup', setup_id=s.id) }}"
             style="display:inline;">
@@ -42,7 +54,9 @@
           Löschen
         </button>
       </form>
-      <a href="{{ url_for('edit_setup', setup_id=s.id) }}">Bearbeiten</a>
+
+      {{ s.name }} ({{ s.benutzer.username }}, {{ s.projekt.name }}, {{ s.maschine.name }})
+
     </li>
   {% else %}
     <li>Keine Setups vorhanden.</li>

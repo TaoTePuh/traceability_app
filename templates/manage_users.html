@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Benutzerverwaltung{% endblock %}
+{% block title %}Benutzer verwalten{% endblock %}
 
 {% block content %}
-  <h1>Benutzerverwaltung</h1>
+  <h1>Benutzer verwalten</h1>
 
   <form method="post" action="{{ url_for('manage_users') }}">
     {{ form.hidden_tag() }}
@@ -29,24 +29,26 @@
   <ul>
     {% for user in users %}
     <li>
-      {{ user.username }}{% if user.full_name %} ({{ user.full_name }}){% endif %}
-                         {% if user.remarks %} [{{ user.remarks }}]{% endif %}
 
-      <!-- Lösch-Formular wie gehabt -->
+      <!-- Bearbeiten -->
+      <form method="get"
+            action="{{ url_for('edit_user', user_id=user.id) }}"
+            style="display:inline;">
+        <button type="submit">Bearbeiten</button>
+      </form>
+
+      <!-- Löschen -->
       <form method="post"
             action="{{ url_for('manage_users') }}"
-            style="display:inline; margin-left:8px;">
+            style="display:inline;">
         {{ form.csrf_token }}
         <input type="hidden" name="delete_user_id" value="{{ user.id }}">
         <button type="submit">Löschen</button>
       </form>
 
-      <!-- Neu: Bearbeiten als Button -->
-      <form method="get"
-            action="{{ url_for('edit_user', user_id=user.id) }}"
-            style="display:inline; margin-left:8px;">
-        <button type="submit">Bearbeiten</button>
-      </form>
+      {{ user.username }}{% if user.full_name %} ({{ user.full_name }}){% endif %}
+                         {% if user.remarks %} [{{ user.remarks }}]{% endif %}
+
     </li>
     {% endfor %}
   </ul>

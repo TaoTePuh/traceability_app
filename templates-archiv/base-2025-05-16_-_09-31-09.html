@@ -33,6 +33,50 @@
     <header>
       <nav>
         <ul style="display: flex; align-items: center; list-style: none;">
+<template id="temp-comment">
+            <!-- BENUTZER -->
+          <li style="margin-right:20px;">
+            <span style="font-weight: bold; font-size: 0.9em;">Benutzer</span><br>
+            <form action="{{ url_for('index') }}" method="get" id="userForm">
+              <select name="selected_user" onchange="document.getElementById('userForm').submit()">
+                <option value="" {% if not selected_user %}selected{% endif %}>-- Benutzer auswählen --</option>
+                {% for user in users %}
+                  <option value="{{ user.id }}" {% if selected_user and selected_user == user.id %}selected{% endif %}>
+                    {{ user.username }}
+                  </option>
+                {% endfor %}
+              </select>
+            </form>
+          </li>
+          <!-- PROJEKTE -->
+          <li style="margin-right:20px;">
+            <span style="font-weight: bold; font-size: 0.9em;">Projekt</span><br>
+            <form action="{{ url_for('index') }}" method="get" id="projectForm">
+              <select name="selected_project" onchange="document.getElementById('projectForm').submit()">
+                <option value="" {% if not selected_project %}selected{% endif %}>-- Projekt auswählen --</option>
+                {% for project in projects %}
+                  <option value="{{ project.id }}" {% if selected_project and selected_project == project.id %}selected{% endif %}>
+                    {{ project.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </form>
+          </li>
+          <!-- MASCHINEN -->
+          <li style="margin-right:20px;">
+            <span style="font-weight: bold; font-size: 0.9em;">Maschine</span><br>
+            <form action="{{ url_for('index') }}" method="get" id="machineForm">
+              <select name="selected_machine" onchange="document.getElementById('machineForm').submit()">
+                <option value="" {% if not selected_machine %}selected{% endif %}>-- Maschine auswählen --</option>
+                {% for machine in machines %}
+                  <option value="{{ machine.id }}" {% if selected_machine and selected_machine == machine.id %}selected{% endif %}>
+                    {{ machine.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </form>
+          </li>
+</template>
           <!-- SETUPS -->
           <li style="margin-right:20px;">
             <span style="font-weight: bold; font-size: 0.9em;">Setup</span><br>

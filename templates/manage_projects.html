@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Projektverwaltung{% endblock %}
+{% block title %}Projekte verwalten{% endblock %}
 
 {% block content %}
-  <h1>Projektverwaltung</h1>
+  <h1>Projekte verwalten</h1>
 
   <form method="post" action="{{ url_for('manage_projects') }}">
     {{ form.hidden_tag() }}
@@ -29,25 +29,27 @@
   <ul>
     {% for project in projects %}
     <li>
-      {{ project.name }}{% if project.description %} ({{ project.description }}){% endif %}
-                        {% if project.remarks %} [{{ project.remarks }}]{% endif %}
+
+      <!-- Bearbeiten -->
+      <form method="get"
+            action="{{ url_for('edit_project', project_id=project.id) }}"
+            style="display:inline;">
+        <button type="submit">Bearbeiten</button>
+      </form>
 
       <!-- Löschen -->
       <form method="post"
             action="{{ url_for('manage_projects') }}"
-            style="display:inline; margin-left:8px;">
+            style="display:inline;">
         {{ form.csrf_token }}
         <input type="hidden" name="delete_project_id" value="{{ project.id }}">
         <button type="submit">Löschen</button>
       </form>
 
-      <!-- Bearbeiten -->
-      <form method="get"
-            action="{{ url_for('edit_project', project_id=project.id) }}"
-            style="display:inline; margin-left:8px;">
-        <button type="submit">Bearbeiten</button>
-      </form>
-    </li>
+      {{ project.name }}{% if project.description %} ({{ project.description }}){% endif %}
+                        {% if project.remarks %} [{{ project.remarks }}]{% endif %}
+
+     </li>
     {% endfor %}
   </ul>
   {% endblock %}
