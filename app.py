@@ -54,11 +54,11 @@ def inject_common_data():
 @app.route('/')
 def index():
     # alle Setups, deren status = 'offen' (case-insensitive)
-    setups = (Setup.query
+    setups_open = (Setup.query
                    .filter(func.lower(Setup.status) == 'offen')
                    .order_by(Setup.name)
                    .all())
-    return render_template('index.html', setups=setups)
+    return render_template('index.html', setups_open=setups_open)
 
 @app.route('/users', methods=['GET', 'POST'])
 def manage_users():
@@ -205,8 +205,12 @@ def manage_setups():
                 return redirect(url_for('index', selected_setup=new_setup.id))
             elif form.submit_stay.data:
                 return redirect(url_for('manage_setups', selected_setup=new_setup.id))
-    setups = Setup.query.order_by(Setup.name).all()
-    return render_template('manage_setups.html', form=form, setups=setups)
+    setups_all  = Setup.query.order_by(Setup.name).all()
+    setups_open = (Setup.query
+                    .filter(func.lower(Setup.status) == 'offen')
+                    .order_by(Setup.name)
+                    .all())
+    return render_template('manage_setups.html', form=form, setups_all=setups_all, setups_open=setups_open)
 
 @app.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):

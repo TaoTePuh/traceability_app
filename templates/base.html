@@ -38,7 +38,7 @@
             <label for="setup">Setup</label><br>
             <select name="setup" id="setup">
               <option value="">-- Setup auswählen --</option>
-              {% for s in setups %}
+              {% for s in setups_open %}
                 <option value="{{ s.id }}">{{ s.name }}</option>
               {% endfor %}
             </select>
