@@ -13,5 +13,10 @@
     <div>{{ form.status.label      }}<br>{{ form.status()      }}<br><br></div>
     <div>{{ form.bemerkungen.label }}<br>{{ form.bemerkungen() }}<br><br></div>
     <button type="submit">Speichern</button>
-  </form>
+    <form method="get"
+        action="{{ url_for('manage_setups') }}"
+        style="display:inline;">
+      <button type="submit">Abbrechen</button>
+    </form>
+</form>
 {% endblock %}

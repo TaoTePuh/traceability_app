@@ -9,6 +9,10 @@
       <div>{{ form.description.label }}<br>{{ form.description(size=64) }}<br><br></div>
       <div>{{ form.remarks.label     }}<br>{{ form.remarks(size=64)     }}<br><br></div>
       <button type="submit">Speichern</button>
-      <a href="{{ url_for('manage_machines') }}">Abbrechen</a>
+      <form method="get"
+          action="{{ url_for('manage_machines') }}"
+          style="display:inline;">
+        <button type="submit">Abbrechen</button>
+      </form>
   </form>
 {% endblock %}
